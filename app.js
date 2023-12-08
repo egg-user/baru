@@ -52,6 +52,7 @@ app.post('/login', (request, response) => {
     }
 });
 
+//mendapatkan username yang sedang login
 app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
 		response.send('Welcome back, ' + request.session.username + '!');
@@ -110,6 +111,15 @@ app.delete('/delete', (request, response) => {
 		response.end()
 	}
 })
+
+//api setelah login
+app.get('/api/protected', (req, res) => {
+	if (req.session.user) {
+	  res.json({ message: 'Halaman terproteksi' });
+	} else {
+	  res.status(401).json({ message: 'Akses ditolak. Silakan login terlebih dahulu.' });
+	}
+  });
 
 
 function authenticateUser(username, password, callback) {
